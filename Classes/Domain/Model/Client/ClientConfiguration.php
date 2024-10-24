@@ -38,14 +38,14 @@ class ClientConfiguration
     protected $scheme = 'http';
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $username = '';
+    protected $username = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $password = '';
+    protected $password = null;
 
     /**
      * @Flow\Inject
@@ -138,10 +138,10 @@ class ClientConfiguration
     /**
      * Sets password
      *
-     * @param string $password
+     * @param string|null $password
      * @return void
      */
-    public function setPassword(string $password): void
+    public function setPassword(?string $password): void
     {
         $this->password = $password;
     }
@@ -151,10 +151,14 @@ class ClientConfiguration
      */
     public function getUri(): UriInterface
     {
-        return $this->uriFactory->createUri()
+        $uriWithoutAuthorization = $this->uriFactory->createUri()
             ->withScheme($this->scheme)
             ->withHost($this->host)
-            ->withPort($this->port)
-            ->withUserInfo($this->username, $this->password);
+            ->withPort($this->port);
+        if ($this->username && $this->password) {
+            return $uriWithoutAuthorization->withUserInfo($this->username, $this->password);
+        } else {
+            return $uriWithoutAuthorization;
+        }
     }
 }
