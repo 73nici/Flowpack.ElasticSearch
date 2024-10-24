@@ -120,7 +120,7 @@ class ClientConfiguration
      * @param string $username
      * @return void
      */
-    public function setUsername(string $username): void
+    public function setUsername(?string $username): void
     {
         $this->username = $username;
     }
