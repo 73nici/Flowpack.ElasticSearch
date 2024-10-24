@@ -155,10 +155,10 @@ class ClientConfiguration
             ->withScheme($this->scheme)
             ->withHost($this->host)
             ->withPort($this->port);
-        if ($this->username && $this->password) {
-            return $uriWithoutAuthorization->withUserInfo($this->username, $this->password);
-        } else {
+        if ($this->username === null && $this->password === null) {
             return $uriWithoutAuthorization;
+        } else {
+            return $uriWithoutAuthorization->withUserInfo($this->username, $this->password);
         }
     }
 }
